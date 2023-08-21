@@ -5,9 +5,17 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AppService {
-  private API_SERVER: string = "http://localhost:3300";
+  private API_SERVER: string = "http://localhost:8080/api/v1";
 
   constructor(private httpClient: HttpClient) { }
+  
+  sendGetRequest() {
+    return this.httpClient.get(this.API_SERVER + "/");
+  }
+
+  sendPostRequest(param: any = {}) {
+    return this.httpClient.post(this.API_SERVER + "/", param);
+  }
 
   /*sendRequest(param: any) {
     return this.httpClient.get(this.API_SERVER);

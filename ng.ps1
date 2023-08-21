@@ -8,11 +8,23 @@ if ($PSVersionTable.PSVersion -lt "6.0" -or $IsWindows) {
   $exe=".exe"
 }
 $ret=0
+#$angular_cli_bin="$basedir/../@angular/cli/bin"
+$angular_cli_bin="$basedir/node_modules/@angular/cli/bin"
 if (Test-Path "$basedir/node$exe") {
-  & "$basedir/node$exe"  "$basedir/node_modules/@angular/cli/bin/ng" $args
+  # Support pipeline input
+  if ($MyInvocation.ExpectingInput) {
+    $input | & "$basedir/node$exe"  "$angular_cli_bin/ng.js" $args
+  } else {
+    & "$basedir/node$exe"  "$angular_cli_bin/ng.js" $args
+  }
   $ret=$LASTEXITCODE
 } else {
-  & "node$exe"  "$basedir/node_modules/@angular/cli/bin/ng" $args
+  # Support pipeline input
+  if ($MyInvocation.ExpectingInput) {
+    $input | & "node$exe"  "$angular_cli_bin/ng.js" $args
+  } else {
+    & "node$exe"  "$angular_cli_bin/ng.js" $args
+  }
   $ret=$LASTEXITCODE
 }
 exit $ret
